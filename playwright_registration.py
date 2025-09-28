@@ -22,5 +22,4 @@ with sync_playwright() as playwright:
 
     dashboard_header = page.get_by_test_id('dashboard-toolbar-title-text')
     expect(dashboard_header).to_be_visible()
-
     expect(dashboard_header).to_have_text('Dashboard')
