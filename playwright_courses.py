@@ -14,7 +14,7 @@ with sync_playwright() as playwright:
 
     username_input = page.get_by_test_id('registration-form-username-input').locator(
         'input')
-    email_input.fill('username')
+    username_input.fill('username')
 
     password_input = page.get_by_test_id('registration-form-password-input').locator(
         'input')
