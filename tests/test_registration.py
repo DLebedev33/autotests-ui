@@ -1,7 +1,11 @@
 from playwright.sync_api import sync_playwright
+import pytest
 # Мы полностью копируем скрипт из папки templates с названием
 # playwrught_registration2 и теперь выполним как тест
 
+
+@pytest.mark.regression
+@pytest.mark.registration
 def test_successful_registration():
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=False)
