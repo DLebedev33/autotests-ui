@@ -1,5 +1,5 @@
 import pytest
-from playwright.sync_api import sync_playwright, Page, Playwright
+from playwright.sync_api import sync_playwright, Page, Playwright, expect
 
 
 @pytest.fixture
@@ -8,4 +8,43 @@ def chromium_page(playwright: Playwright) -> Page:
     yield browser.new_page()
 # yield даёт нам делать какие то действия до теста и какие то действия после теста,
 # если поставить return, то браузер закроется до начала теста
+    browser.close()
+
+
+@pytest.fixture(scope="session")
+def initialize_browser_state(playwright: Playwright):
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+
+    page.goto('https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/registration')
+
+    email_input = page.get_by_test_id('registration-form-email-input').locator('input')
+    email_input.fill('user.name@gmail.com')
+
+    username_input = page.get_by_test_id('registration-form-username-input').locator('input')
+    username_input.fill('username')
+
+    password_input = page.get_by_test_id('registration-form-password-input').locator('input')
+    password_input.fill('password')
+
+    registration_button = page.get_by_test_id('registration-page-registration-button')
+    registration_button.click()
+
+    context.storage_state(path='browser-state.json2')
+
+    browser.close()
+
+
+@pytest.fixture(scope="function")
+#     Можно и без scope, так как по дефолту всегда function
+def chromium_page_with_state(playwright: Playwright, initialize_browser_state) -> Page:
+    # Припысываем фикстуру initialize_browser_state, чтобы вызвать зависимость от фикстуры
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context(storage_state='browser-state.json2')
+    page = context.new_page()
+
+    page.goto('https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses')
+
+    yield page
     browser.close()
