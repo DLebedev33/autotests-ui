@@ -21,12 +21,6 @@ class LoginPage(BasePage):
         self.password_input.fill(password)
         expect(self.password_input).to_have_value(password)  # Проверяем, что пароль введен корректно
 
-    def fill_login_form(self, email: str, password: str):
-        self.email_input.fill(email)
-        expect(self.email_input).to_have_value(email)
-
-        self.password_input.fill(password)
-        expect(self.password_input).to_have_value(password)
 
     # Метод для нажатия на кнопку "Login"
     def click_login_button(self):
