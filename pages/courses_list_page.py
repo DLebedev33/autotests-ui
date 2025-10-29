@@ -43,7 +43,7 @@ class CoursesListPage(BasePage):
         expect(self.create_courses_button).to_be_visible()
 
     def click_create_courses_button(self):
-        expect(self.create_courses_button).to_be_visible()
+        self.create_courses_button.click()
 
     def check_visible_course_card(
             self,
@@ -59,13 +59,13 @@ class CoursesListPage(BasePage):
         expect(self.course_title.nth(index)).to_have_text(title)
 
         expect(self.course_max_text.nth(index)).to_be_visible()
-        expect(self.course_max_text.nth(index)).to_have_text(f'max_score: {max_score}')
+        expect(self.course_max_text.nth(index)).to_have_text(f'Max score: {max_score}')
 
         expect(self.course_min_text.nth(index)).to_be_visible()
-        expect(self.course_min_text.nth(index)).to_have_text(f'min_score: {min_score}')
+        expect(self.course_min_text.nth(index)).to_have_text(f'Min score: {min_score}')
 
         expect(self.course_estimate_time_text.nth(index)).to_be_visible()
-        expect(self.course_estimate_time_text.nth(index)).to_have_text(f'estimated_time: {estimated_time}')
+        expect(self.course_estimate_time_text.nth(index)).to_have_text(f'Estimated time: {estimated_time}')
 
     def click_edit_course(self, index: int):
         self.course_edit_menu_button.nth(index).click()
