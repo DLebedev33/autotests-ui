@@ -1,18 +1,22 @@
-from playwright.sync_api import Page, expect
-
+from components.navigation.navbar_component import NavbarComponent # 1
+from components.navigation.sidebar_component import SidebarComponent
 from pages.base_page import BasePage
+
+from playwright.sync_api import Page, expect
 
 class DashboardPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
+
+        self.navbar = NavbarComponent(page) ## и передаём page, который у нас описан (импорт подъедет сам): 1
 
         self.dashboard_title = page.get_by_test_id('dashboard-toolbar-title-text')
 
         self.students_title = page.get_by_test_id('students-widget-title-text')
         self.students_chart = page.get_by_test_id('students-bar-chart')
 
-        self.activites_title = page.get_by_test_id('activities-widget-title-text')
-        self.activites_chart = page.get_by_test_id('activities-line-chart')
+        self.activities_title = page.get_by_test_id('activities-widget-title-text')
+        self.activities_chart = page.get_by_test_id('activities-line-chart')
 
         self.courses_title = page.get_by_test_id('courses-widget-title-text')
         self.courses_chart = page.get_by_test_id('courses-pie-chart')
@@ -20,7 +24,9 @@ class DashboardPage(BasePage):
         self.scores_title = page.get_by_test_id('scores-widget-title-text')
         self.scores_chart = page.get_by_test_id('scores-scatter-chart')
 
-    def check_dashboard_title(self):
+        self.sidebar = SidebarComponent(page)
+
+    def check_visible_dashboard_title(self):
         expect(self.dashboard_title).to_be_visible()
         expect(self.dashboard_title).to_have_text('Dashboard')
 
@@ -30,11 +36,16 @@ class DashboardPage(BasePage):
         expect(self.students_chart).to_be_visible()
 
     def check_visible_activites_chart(self):
-        expect(self.activites_title).to_be_visible()
-        expect(self.activites_title).to_have_text('Activites')
-        expect(self.activites_chart).to_be_visible()
+        expect(self.activities_title).to_be_visible()
+        expect(self.activities_title).to_have_text('Activities')
+        expect(self.activities_chart).to_be_visible()
 
     def check_visible_scores_chart(self):
         expect(self.scores_title).to_be_visible()
         expect(self.scores_title).to_have_text('Scores')
         expect(self.scores_chart).to_be_visible()
+
+    def check_visible_courses_chart(self):
+        expect(self.courses_title).to_be_visible()
+        expect(self.courses_title).to_have_text('Courses')
+        expect(self.courses_chart).to_be_visible()
